@@ -1,7 +1,46 @@
 (function() {
+  
+// Simple JavaScript Templating
+// John Resig - http://ejohn.org/ - MIT Licensed
+(function(){
+  var cache = {};
+
+  this.tmpl = function tmpl(str, data){
+    // Figure out if we're getting a template, or if we need to
+    // load the template - and be sure to cache the result.
+    var fn = !/\W/.test(str) ?
+      cache[str] = cache[str] ||
+        tmpl(document.getElementById(str).innerHTML) :
+
+      // Generate a reusable function that will serve as a template
+      // generator (and which will be cached).
+      new Function("obj",
+        "var p=[],print=function(){p.push.apply(p,arguments);};" +
+
+        // Introduce the data as local variables using with(){}
+        "with(obj){p.push('" +
+
+        // Convert the template into pure JavaScript
+        str
+          .replace(/[\r\t\n]/g, " ")
+          .split("<%").join("\t")
+          .replace(/((^|%>)[^\t]*)'/g, "$1\r")
+          .replace(/\t=(.*?)%>/g, "',$1,'")
+          .split("\t").join("');")
+          .split("%>").join("p.push('")
+          .split("\r").join("\\'")
+      + "');}return p.join('');");
+
+    // Provide some basic currying to the user
+    return data ? fn( data ) : fn;
+  };
+})();
+
+
+;
   var Wall, WallError, WallStream,
-    __slice = [].slice,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __slice = [].slice;
 
   String.prototype.camelize = function() {
     return this.split(/-/).reduce(function(a, b) {
@@ -12,6 +51,41 @@
       }
     });
   };
+
+  Wall = (function() {
+    Wall.prototype.defaults = {
+      template: '<p id="<%=id%>"><%=comment%></p>',
+      wallStreamOptions: {}
+    };
+
+    function Wall(el, options) {
+      if (options == null) {
+        options = {};
+      }
+      this.renderPost = __bind(this.renderPost, this);
+      this.$el = $(el);
+      this.options = {};
+      this.options = $.extend({}, this.defaults, options);
+      this.stream = new WallStream($.extend(this.options.wallStreamOptions, {
+        onPost: this.renderPost
+      }));
+    }
+
+    Wall.prototype.renderPost = function(post) {
+      var html, template;
+      template = $.isFunction(this.options.template) ? this.options.template(post) : this.options.template;
+      html = tmpl(template, post);
+      if ($.isFunction(this.options.beforeInsert)) {
+        html = this.options.beforeInsert(html, post);
+      }
+      return this.$el.append(html);
+    };
+
+    return Wall;
+
+  })();
+
+  window.Wall = Wall;
 
   WallError = (function() {
     function WallError(name, message) {
@@ -133,44 +207,6 @@
   })();
 
   window.WallStream = WallStream;
-
-  Wall = (function() {
-    Wall.prototype.defaults = {
-      template: '<p id="#{id}">#{comment}</p>',
-      wallStreamOptions: {}
-    };
-
-    function Wall(el, options) {
-      if (options == null) {
-        options = {};
-      }
-      this.renderPost = __bind(this.renderPost, this);
-      this.$el = $(el);
-      this.options = {};
-      this.options = $.extend({}, this.defaults, options);
-      this.stream = new WallStream($.extend(this.options.wallStreamOptions, {
-        onPost: this.renderPost
-      }));
-    }
-
-    Wall.prototype.renderPost = function(post) {
-      var html, key, value;
-      html = typeof this.options.template === "function" ? this.options.template(post) : this.options.template;
-      for (key in post) {
-        value = post[key];
-        html = html.replace(new RegExp("\#\{" + key + "\}", "g"), value);
-      }
-      if (typeof this.options.beforeInsert === "function") {
-        html = this.options.beforeInsert(html, post);
-      }
-      return this.$el.append(html);
-    };
-
-    return Wall;
-
-  })();
-
-  window.Wall = Wall;
 
   (function($) {
     return $.fn.extend({
