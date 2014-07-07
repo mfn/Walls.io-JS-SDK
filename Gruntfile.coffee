@@ -37,15 +37,9 @@ module.exports = (grunt) ->
       compile:
         files:
           "<%= grunt.config.get('buildDir') %>/js/application.js": ["src/assets/javascripts/application.coffee"],
-          "<%= grunt.config.get('buildDir') %>/js/wall.js": ["src/assets/javascripts/wall.coffee"]
-                    
-    jade:
-      compile:
-        options:
-          pretty: true
-        files: [
-          { expand: true, cwd: "src/views", src: "**/*.jade", dest: "<%= grunt.config.get('buildDir') %>/", ext: ".html" }
-        ]
+          "<%= grunt.config.get('buildDir') %>/js/wallsio.widget.js": ["src/assets/javascripts/wallsio.widget.coffee"],
+          "<%= grunt.config.get('buildDir') %>/js/wallsio.jquery.js": ["src/assets/javascripts/wallsio.jquery.coffee"],
+          "<%= grunt.config.get('buildDir') %>/js/wallsio.js": ["src/assets/javascripts/wallsio.coffee"]
       
     watch:
       scripts:
@@ -64,11 +58,10 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-contrib-concat"
   grunt.loadNpmTasks "grunt-contrib-uglify"
   grunt.loadNpmTasks "grunt-contrib-copy"
-  grunt.loadNpmTasks "grunt-contrib-jade"
   grunt.loadNpmTasks "grunt-contrib-clean"
   
   grunt.loadNpmTasks "grunt-notify"
   
-  grunt.registerTask "default", ["config:dev", "clean", "rig", "jade", "copy"]
-  grunt.registerTask "dist", ["config:dist", "clean", "rig", "jade", "copy", "useminPrepare", "usemin", "concat", "uglify"]
+  grunt.registerTask "default", ["config:dev", "clean", "rig", "copy"]
+  grunt.registerTask "dist", ["config:dist", "clean", "rig", "copy", "useminPrepare", "usemin", "concat", "uglify"]
   
