@@ -7,10 +7,10 @@ include   = require("gulp-include")
 buildDir  = "build"
 distDir   = "dist"
 assetsDir = "src/assets"
-publicDir = "src/public"
+vendorDir = "src/vendor"
 
 gulp.task "copy", ->
-  gulp.src("#{publicDir}/**/*")
+  gulp.src("#{vendorDir}/**/*")
   .pipe(cache("copyfiles"))
   .pipe(gulp.dest(buildDir))
 
@@ -29,7 +29,7 @@ gulp.task "pseudodist", ->
 gulp.task "watch", ->
   watcherOnChange = (e) -> console.log("#{e.path} was #{e.type}, running tasks.")
 
-  gulp.watch("#{publicDir}/**/*", ["copy"]).on("change", watcherOnChange)
+  gulp.watch("#{vendorDir}/**/*", ["copy"]).on("change", watcherOnChange)
   gulp.watch("#{assetsDir}/javascripts/**/*", ["scripts"]).on("change", watcherOnChange)
 
 gulp.task "default", ["scripts", "copy"]
