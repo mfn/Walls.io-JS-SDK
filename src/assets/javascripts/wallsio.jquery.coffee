@@ -1,5 +1,5 @@
-#= mototype.coffee
-#= wall.coffee
+#= require mototype.coffee
+#= require wall.coffee
 
 (($) ->
   $.fn.extend wall: (options) ->
