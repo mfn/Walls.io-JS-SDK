@@ -1,22 +1,18 @@
 {
   "name": "Walls.io-Widget",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-jshint": "~0.6.3",
-    "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-coffee": "~0.7.0",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-rigger": "~0.5.0",
-    "coffee-script": "~1.6.3",
-    "grunt-config": "~0.1.4",
-    "grunt-text-replace": "~0.3.10",
-    "grunt-contrib-copy": "~0.5.0",
-    "node-bourbon": "~1.0.0",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-notify": "~0.2.17",
-    "grunt-usemin": "~2.0.2",
-    "grunt-contrib-concat": "~0.3.0"
+    "gulp": "~3.8.5",
+    "gulp-cached": "0.0.3",
+    "gulp-changed": "~0.4.0",
+    "gulp-coffee": "^2.0.1",
+    "gulp-concat": "~2.2.0",
+    "gulp-if": "~1.2.1",
+    "gulp-jshint": "~1.6.3",
+    "gulp-remember": "^0.2.0",
+    "gulp-rename": "~1.2.0",
+    "gulp-uglify": "~0.3.1",
+    "jshint-stylish": "~0.2.0",
+    "lodash": "~2.4.1"
   }
 }
