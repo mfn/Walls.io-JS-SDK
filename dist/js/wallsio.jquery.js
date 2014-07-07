@@ -1,5 +1,6 @@
 (function() {
   var Wall, WallError, WallStream,
+    __slice = [].slice,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   String.prototype.camelize = function() {
@@ -11,13 +12,6 @@
       }
     });
   };
-
-  WallStream = (function() {
-    function WallStream() {}
-
-    return WallStream;
-
-  })();
 
   WallError = (function() {
     function WallError(name, message) {
@@ -36,75 +30,140 @@
 
   })();
 
+  window.WallError = WallError;
+
+  WallStream = (function() {
+    WallStream.prototype.defaults = {
+      interval: 2000,
+      initialLimit: 10,
+      accessToken: null,
+      fields: [],
+      types: [],
+      host: "https://beta.walls.io",
+      path: "/api/posts.json",
+      onPost: function() {}
+    };
+
+    function WallStream(options) {
+      this.options = {};
+      this.options = $.extend({}, this.defaults, options);
+      this.latestId = null;
+      this.stopped = false;
+      if (!this.options.accessToken) {
+        new WallError("AccessTokenError", "access token missing");
+      }
+      this.params = {
+        access_token: this.options.accessToken,
+        limit: this.options.initialLimit,
+        fields: this.options.fields,
+        types: this.options.types
+      };
+      if (this.params.fields.indexOf("id") === -1 && this.params.fields.length > 0) {
+        this.params.fields.push("id");
+      }
+      this._start();
+    }
+
+    WallStream.prototype._prepareParams = function(params) {
+      var key, newHash, value, valueIsArray;
+      newHash = {};
+      for (key in params) {
+        value = params[key];
+        valueIsArray = $.isArray(value);
+        if (valueIsArray && value.length === 0) {
+          continue;
+        }
+        if (!value) {
+          continue;
+        }
+        newHash[key] = $.isArray(value) ? value.join(",") : value;
+      }
+      return $.param(newHash);
+    };
+
+    WallStream.prototype._fetch = function() {
+      if (this.latestId) {
+        this.params.after = this.latestId;
+      }
+      return $.getJSON("" + this.options.host + this.options.path + "?callback=?&" + (this._prepareParams(this.params)), (function(_this) {
+        return function(result) {
+          var post, _i, _len, _ref, _ref1, _ref2;
+          if (_this.stopped) {
+            return;
+          }
+          delete _this.params.limit;
+          if ((result != null ? result.data.length : void 0) > 0) {
+            _this.latestId = result != null ? (_ref = result.data) != null ? _ref[0].id : void 0 : void 0;
+          }
+          _ref2 = result != null ? (_ref1 = result.data) != null ? _ref1.reverse() : void 0 : void 0;
+          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+            post = _ref2[_i];
+            _this.options.onPost(post);
+          }
+          return _this._timeout = _this._delayed(_this._fetch, _this.options.interval);
+        };
+      })(this));
+    };
+
+    WallStream.prototype._start = function() {
+      this.stopped = false;
+      return this._fetch();
+    };
+
+    WallStream.prototype._stop = function() {
+      this.stopped = true;
+      if (this._timeout) {
+        clearTimeout(this._timeout);
+        return this._timeout = null;
+      }
+    };
+
+    WallStream.prototype._delayed = function() {
+      var args, callback, ms;
+      callback = arguments[0], ms = arguments[1], args = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
+      return setTimeout((function(_this) {
+        return function() {
+          return callback.apply(_this, args);
+        };
+      })(this), ms);
+    };
+
+    return WallStream;
+
+  })();
+
+  window.WallStream = WallStream;
+
   Wall = (function() {
     Wall.prototype.defaults = {
-      interval: 2000,
-      initalLimit: 10,
-      accessToken: null,
       template: '<p id="#{id}">#{comment}</p>',
-      host: "https://beta.walls.io",
-      beforeInsert: null
+      wallStreamOptions: {}
     };
 
     function Wall(el, options) {
       if (options == null) {
         options = {};
       }
-      this.fetched = __bind(this.fetched, this);
-      this.fetch = __bind(this.fetch, this);
+      this.renderPost = __bind(this.renderPost, this);
       this.$el = $(el);
       this.options = {};
       this.options = $.extend({}, this.defaults, options);
-      if (!this.options.accessToken) {
-        new WallError("AccessTokenError", "access token missing");
-      }
-      this.latest = null;
-      this.fetch();
+      this.stream = new WallStream($.extend(this.options.wallStreamOptions, {
+        onPost: this.renderPost
+      }));
     }
 
-    Wall.prototype.fetch = function() {
-      var params, path;
-      params = {
-        access_token: this.options.accessToken
-      };
-      if (!this.latest) {
-        params["limit"] = this.options.initialLimit;
+    Wall.prototype.renderPost = function(post) {
+      var html, key, value;
+      html = typeof this.options.template === "function" ? this.options.template(post) : this.options.template;
+      for (key in post) {
+        value = post[key];
+        html = html.replace(new RegExp("\#\{" + key + "\}", "g"), value);
       }
-      if (this.latest) {
-        params["after"] = this.latest;
+      if (typeof this.options.beforeInsert === "function") {
+        html = this.options.beforeInsert(html, post);
       }
-      path = ("" + this.options.host + "/api/posts.json?callback=?&") + $.param(params);
-      return $.getJSON(path, (function(_this) {
-        return function(result) {
-          if (result.data && result.data.length > 0) {
-            _this.latest = result.data[0].id;
-          }
-          _this.fetched(result.data);
-          return setTimeout(_this.fetch, _this.options.interval);
-        };
-      })(this));
-    };
-
-    Wall.prototype.fetched = function(posts) {
-      var html, key, post, value, _i, _len, _results;
-      _results = [];
-      for (_i = 0, _len = posts.length; _i < _len; _i++) {
-        post = posts[_i];
-        html = this.options.template;
-        for (key in post) {
-          value = post[key];
-          html = html.replace(new RegExp("\#\{" + key + "\}", "g"), value);
-        }
-        if (typeof this.options.beforeInsert === "function") {
-          html = this.options.beforeInsert(html, post);
-        }
-        if (html) {
-          _results.push(this.$el.append(html));
-        } else {
-          _results.push(void 0);
-        }
-      }
-      return _results;
+      return this.$el.append(html);
     };
 
     return Wall;

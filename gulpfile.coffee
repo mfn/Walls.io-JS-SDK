@@ -19,6 +19,7 @@ gulp.task "scripts", ->
   .pipe(cache("scripts"))
   .pipe(include())
   .pipe(coffee())
+  .on "error", (error) -> console.log error
   .pipe(gulp.dest(buildDir + "/js"))
 
 gulp.task "pseudodist", ->
