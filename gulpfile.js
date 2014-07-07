@@ -25,6 +25,11 @@ gulp.task("scripts", function() {
   .pipe(gulp.dest(buildDir + "/js"));
 });
 
+gulp.task("pseudodist", function() {
+  return gulp.src(buildDir + "/**/*")
+  .pipe(gulp.dest(distDir));
+});
+
 gulp.task("watch", function() {
   var watcherOnChange = function(e) {
     console.log(e.path + " was " + e.type + ", running tasks.");
@@ -35,3 +40,4 @@ gulp.task("watch", function() {
 });
 
 gulp.task("default", ["scripts", "copy"]);
+gulp.task("dist", ["default", "pseudodist"]);
