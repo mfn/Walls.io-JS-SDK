@@ -11,5 +11,15 @@
   </head>
   <body>
     <div id="mywall"></div>
+
+    <script type="text/html" id="my-template">
+    <div class="post">
+      <strong><%=external_name%>:</strong> <%=comment%><br>
+      <small><%=type%></small>
+      <% if (post_image) { %>
+        <img src="<%=post_image%>">
+      <% } %>
+    </div>
+    </script>
   </body>
 </html>
