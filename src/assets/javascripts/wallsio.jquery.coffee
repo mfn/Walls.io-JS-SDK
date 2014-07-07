@@ -1,7 +1,8 @@
-#= require prototype_extensions.coffee
-#= require wall_error.coffee
-#= require wall_stream.coffee
-#= require wall.coffee
+`
+//= require ../../vendor/js/tmpl.js
+`
+
+#= require_tree includes
 
 (($) ->
   $.fn.extend wall: (options) ->
