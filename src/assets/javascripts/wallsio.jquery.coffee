@@ -1,4 +1,6 @@
-#= mototype.coffee
+#= prototype_extensions.coffee
+#= wall_error.coffee
+#= wall_stream.coffee
 #= wall.coffee
 
 (($) ->

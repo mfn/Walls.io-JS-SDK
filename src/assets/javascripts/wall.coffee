@@ -1,26 +1,8 @@
-class WallStream
-  constructor: ->
-    
-
-class WallError
-  constructor: (name, message) ->
-    throw
-      name:        "#{name}"
-      level:       "Show Stopper"
-      message:     "#{message}"
-      htmlMessage: "#{message}"
-      toString: ->
-        "#{@name}: #{message}"
-
 class Wall
   
   defaults:
-    interval: 2000
-    initalLimit: 10
-    accessToken: null
     template: '<p id="#{id}">#{comment}</p>'
-    host: "https://beta.walls.io"
-    beforeInsert: null
+    wallStream: {}
   
   constructor: (el, options = {}) ->
     @$el     = $(el)
@@ -29,9 +11,8 @@ class Wall
     
     new WallError("AccessTokenError", "access token missing") unless @options.accessToken
     
-    @latest = null
-    @fetch()
-    
+    @stream = new WallStream
+      onPost: @renderPost
     
   fetch: =>
     
