@@ -38,16 +38,7 @@ module.exports = (grunt) ->
         files:
           "<%= grunt.config.get('buildDir') %>/js/application.js": ["src/assets/javascripts/application.coffee"],
           "<%= grunt.config.get('buildDir') %>/js/wall.js": ["src/assets/javascripts/wall.coffee"]
-          
-    sass:
-      dev:
-        options:
-          style: "expanded"
-          loadPath: [require('node-bourbon').includePaths]
-        files:
-          "<%= grunt.config.get('buildDir') %>/css/application.css": "src/assets/stylesheets/application.sass"
-          "<%= grunt.config.get('buildDir') %>/css/theme.css": "src/assets/stylesheets/theme.sass"
-          
+                    
     jade:
       compile:
         options:
@@ -65,7 +56,6 @@ module.exports = (grunt) ->
           livereload: true
   
   grunt.loadNpmTasks "grunt-contrib-coffee"
-  grunt.loadNpmTasks "grunt-contrib-sass"
   grunt.loadNpmTasks "grunt-config"
   grunt.loadNpmTasks "grunt-contrib-watch"
   grunt.loadNpmTasks "grunt-rigger"
@@ -79,6 +69,6 @@ module.exports = (grunt) ->
   
   grunt.loadNpmTasks "grunt-notify"
   
-  grunt.registerTask "default", ["config:dev", "clean", "rig", "sass", "jade", "copy"]
-  grunt.registerTask "build", ["config:dist", "clean", "rig", "sass", "jade", "copy", "useminPrepare", "usemin", "concat", "uglify"]
+  grunt.registerTask "default", ["config:dev", "clean", "rig", "jade", "copy"]
+  grunt.registerTask "dist", ["config:dist", "clean", "rig", "jade", "copy", "useminPrepare", "usemin", "concat", "uglify"]
   
