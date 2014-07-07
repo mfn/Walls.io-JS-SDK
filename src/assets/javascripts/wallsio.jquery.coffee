@@ -1,7 +1,7 @@
-#= prototype_extensions.coffee
-#= wall_error.coffee
-#= wall_stream.coffee
-#= wall.coffee
+#= require prototype_extensions.coffee
+#= require wall_error.coffee
+#= require wall_stream.coffee
+#= require wall.coffee
 
 (($) ->
   $.fn.extend wall: (options) ->
