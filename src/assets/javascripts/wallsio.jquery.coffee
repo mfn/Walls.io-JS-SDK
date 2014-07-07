@@ -1,5 +1,5 @@
 `
-//= require ../../vendor/js/tmpl.js
+//= require ../../public/js/lib/tmpl.js
 `
 
 #= require_tree includes
