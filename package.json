@@ -2,6 +2,7 @@
   "name": "Walls.io-Widget",
   "version": "0.0.2",
   "devDependencies": {
+    "coffee-script": "^1.7.1",
     "gulp": "~3.8.5",
     "gulp-cached": "0.0.3",
     "gulp-coffee": "^2.0.1",
