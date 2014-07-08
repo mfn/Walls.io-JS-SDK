@@ -15,7 +15,9 @@
 
   WallStream = (function() {
     WallStream.prototype.defaults = {
-      template: '<p id="<%=id%>"><%=comment%></p>'
+      template: '<p id="<%=id%>"><%=comment%></p>',
+      maxPosts: 10,
+      insertPosition: "before"
     };
 
     function WallStream(el, options) {
@@ -24,7 +26,6 @@
       }
       this.renderPost = __bind(this.renderPost, this);
       this.$el = $(el);
-      this.options = {};
       this.options = $.extend({}, this.defaults, options);
       this.stream = new WallStreamCore($.extend(this.options, {
         onPost: this.renderPost
@@ -32,11 +33,23 @@
     }
 
     WallStream.prototype.renderPost = function(post) {
-      var $html, html, template;
+      var $html, html, maxPosts, posts, sliceOptions, template;
       template = $.isFunction(this.options.template) ? this.options.template(post) : this.options.template;
       html = tmpl(template, post);
       this._callback(this.options.beforeInsert, html, post);
-      this.$el.append($html = $(html));
+      if (this.options.insertPosition === "before") {
+        this.$el.prepend($html = $(html));
+      } else {
+        this.$el.append($html = $(html));
+      }
+      if ((maxPosts = this.options.maxPosts) !== false) {
+        sliceOptions = {
+          after: [0, maxPosts * -1],
+          before: [maxPosts]
+        };
+        posts = this.$el.children();
+        posts.slice.apply(posts, sliceOptions[this.options.insertPosition]).remove();
+      }
       return this._callback(this.options.afterInsert, $html, post);
     };
 
@@ -56,12 +69,12 @@
 
   WallStreamCore = (function() {
     WallStreamCore.prototype.defaults = {
-      interval: 5000,
+      interval: 2000,
       initialLimit: 10,
       accessToken: null,
       fields: [],
       types: [],
-      host: "beta.walls.io",
+      host: "https://beta.walls.io",
       path: "/api/posts.json",
       onPost: function() {}
     };
@@ -69,7 +82,6 @@
     function WallStreamCore(options) {
       this.options = {};
       this.options = $.extend({}, this.defaults, options);
-      this.options.interval = Math.max(this.options.interval, 1000);
       this.latestId = null;
       this.stopped = false;
       if (!this.options.accessToken) {
@@ -108,7 +120,7 @@
       if (this.latestId) {
         this.params.after = this.latestId;
       }
-      return $.getJSON("https://" + this.options.host + this.options.path + "?callback=?&" + (this._prepareParams(this.params)), (function(_this) {
+      return $.getJSON("" + this.options.host + this.options.path + "?callback=?&" + (this._prepareParams(this.params)), (function(_this) {
         return function(result) {
           var post, _i, _len, _ref, _ref1, _ref2;
           if (_this.stopped) {
