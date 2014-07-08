@@ -21,7 +21,7 @@ class Wall
     @$el.append $html
 
     if $.isFunction(@options.afterInsert)
-      @options.afterInsert($html)
+      @options.afterInsert($html, post)
 
 
 
