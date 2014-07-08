@@ -6,7 +6,7 @@ Widgets and tools for Walls.io
 ## Usage
 
 There are two levels of WallStream:
-1. The WallStream plugins for high-level access: **[WallStream Widget](#javascript-widget)** and **[WallStream jQuery](jquery-plugin)**.
+1. The WallStream plugins for high-level access: **[WallStream Widget](#javascript-widget)** and **[WallStream jQuery](#jquery-plugin)**.
 2. The `WallStreamCore` class for low-level access.
 
 Both levels share the same set of base parameters:
@@ -17,31 +17,29 @@ Both levels share the same set of base parameters:
 - `types`: An array of post types (e.g. `["twitter", "facebook"]`) that you want to receive posts for (optional, default: all types)
 
 
-The plugins (both jQuery and JS widget) have several additional options:
+The plugins (both jQuery and JS widget) have several additional parameters:
 - `template`: A JST template that is used for rendering the post. All fields the API returns for a post are accessible in your template. You can insert variable values with `<%=variableName%>` and even use arbitrary JavaScript (see example below)
 - `maxPosts`: The maximum number of posts that can be in the widget at one time (optional, default: `10`, pass `false` for unlimited posts)
 - `insertPosition`: The position where new posts are added to the DOM (possible values: `before` and `after`, default: `before`)
+
+In addition to all of the above, the **[jQuery plugin](#jquery-plugin)** also supports the following callbacks:
 - `beforeInsert`: A function that is passed the HTML of the rendered post, as well as the post object itself. Use this if you want to modify the post HTML before it is inserted into the DOM. You need to return the modified (or unchanged) HTML from this callback function. You can discard a post by returning `false` from this function.
-- `afterInsert`: This event fires after a post has been inserted into the DOM. The callback function is passed the inserted post as a jQuery object. You can use this to m
+- `afterInsert`: Gets called after a post has been inserted into the DOM. The function is passed the inserted post as a jQuery object.
 
-
+The **[WallStreamCore class](#wallstreamcore)** has all of the base parameters, but none of the plugin options. It exposes one additional callback:
+- `onPost`: This function is called once for every incoming post and is passed the raw post object.
 
 
 ### JavaScript Widget
 
 The WallStream JavaScript widget can be set up by including `wallstream.widget.js` in your HTML. The wall will be created exactly where you put the `<script>` tag.
 
-Options are passed via data attributes:
-- `data-wallstream-access-token`: Your wall access token (required)
-- `data-wallstream-initial-limit`: The number of posts that are fetched right after the widget is loaded (optional, default: `10`)
-- `data-wallstream-max-posts`: The maximum number of posts that can be in the widget at one time (optional, default: `10`, pass `false` for unlimited posts)
-- `data-wallstream-interval`: The rate at which posts are fetched, in milliseconds (optional, default: `5000`, minimum: `1000`)
-- `data-wallstream-insert-position`: The position where new posts are added to the DOM (possible values: `before` and `after`, default: `before`)
+Options are passed via data attributes, prefixed with `data-wallstream-`, e.g. `data-wallstream-access-token`.
 
 Example usage:
 ```html
 <script
-  src="//cdn.rawgit.com/neuling/Walls.io-Widget/master/dist/js/wallsio.widget.js"
+  src="//cdn.rawgit.com/neuling/Walls.io-Widget/master/dist/js/wallstream.widget.js"
   data-wallstream-access-token="<YOUR_ACCESS_TOKEN_HERE>"
   data-wallstream-initial-limit="10"
   data-wallstream-interval="2000">
@@ -50,39 +48,40 @@ Example usage:
 
 ### jQuery Plugin
 
-The WallStream jQuery plugin gives you more power over the rendering of incoming posts than the simple widget. It has all the options the widget has, but camel-cased and without the `"data-wallstream"` prefix (e.g. `"data-wallstream-access-token"` becomes `"accessToken"`). The additional options are:
-
-
-// NOTE: template: JST!
+Example usage:
 
 ```html
 // put this in your <head>, after jQuery!
-<script src="//cdn.rawgit.com/neuling/Walls.io-Widget/master/dist/js/wallsio.jquery.js">
+<script src="//cdn.rawgit.com/neuling/Walls.io-Widget/master/dist/js/wallstream.jquery.js"></script>
 ```
 
-```coffee
-$("#my-wall").wall
-  accessToken: "ACCESS_TOKEN" # required
-  initialLimit: 10
-  interval: 2000
-  template: "<p id='<%=id%>'><%=comment%></p>"
-  beforeInsert: (html, post) ->
-    html
-  afterInsert: ($el, post) ->
-
+```js
+$("#my-wall").wall({
+  accessToken: "<YOUR_ACCESS_TOKEN_HERE>", // required
+  initialLimit: 10,
+  interval: 2000,
+  template: $("#my-template").html(),
+  afterInsert: function($el) {
+    $el.animate(/* ... */);
+  }
+});
 ```
 
-### raw
+### WallStreamCore
+
+The WallStreamCore class gives you low-level access to WallStream. Use this if you want to use your own templating engine or if you want to use posts for something else than adding them to the DOM.
 
 ```html
-<script src="//cdn.rawgit.com/neuling/Walls.io-Widget/master/dist/js/wallsio.js">
+<script src="//cdn.rawgit.com/neuling/Walls.io-Widget/master/dist/js/wallstream.js"></script>
 ```
 
-```coffee
-wall = new Wall
-  accessToken: "ACCESS_TOKEN" # required
-  initialLimit: 10
-  interval: 2000
-  onPost: (post) ->
-    console.log post
+```js
+var stream = new WallStreamCore({
+  accessToken: "<YOUR_ACCESS_TOKEN_HERE>", // required
+  initialLimit: 10,
+  interval: 2000,
+  onPost: function(post) {
+    someSpeechApi.say(post.comment);
+  }
+});
 ```
