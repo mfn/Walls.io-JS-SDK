@@ -1,10 +1,10 @@
 class WallStream
   defaults:
     template: '<p id="<%=id%>"><%=comment%></p>'
+    maxPosts: 10
 
   constructor: (el, options = {}) ->
     @$el     = $(el)
-    @options = {}
     @options = $.extend {}, @defaults, options
     @stream  = new WallStreamCore $.extend(@options, { onPost: @renderPost })
 
@@ -13,7 +13,11 @@ class WallStream
     html     = tmpl(template, post)
 
     @_callback @options.beforeInsert, html, post
-    @$el.append($html = $(html))
+    @$el.prepend($html = $(html))
+
+    if @options.maxPosts != false
+      @$el.children().slice(@options.maxPosts).remove()
+
     @_callback @options.afterInsert, $html, post
 
   _callback: (callback, args...) ->
