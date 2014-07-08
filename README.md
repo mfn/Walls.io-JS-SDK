@@ -58,7 +58,7 @@ Example usage:
 ```
 
 ```js
-$("#my-wall").wall({
+$("#my-wall").wallStream({
   accessToken: "<YOUR_ACCESS_TOKEN_HERE>", // required
   initialLimit: 10,
   interval: 2000,
