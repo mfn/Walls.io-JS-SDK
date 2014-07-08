@@ -67,6 +67,19 @@ $("#my-wall").wall({
 });
 ```
 
+```html
+// the template
+<script type="text/html" id="my-template">
+<div class="post">
+  <strong><%=external_name%></strong>: <%=comment%>
+
+  <% if (post_image) { %>
+    <img src="<%=post_image%>">
+  <% } %>
+</div>
+</script>
+```
+
 ### WallStreamCore
 
 The WallStreamCore class gives you low-level access to WallStream. Use this if you want to use your own templating engine or if you want to use posts for something else than adding them to the DOM.
