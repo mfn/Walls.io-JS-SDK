@@ -6,8 +6,8 @@ Widgets and tools for Walls.io
 ## Usage
 
 There are two levels of WallStream:
-1. The WallStream plugins for high-level access: **[WallStream Widget](#javascript-widget)** and **[WallStream jQuery](#jquery-plugin)**.
-2. The `WallStreamCore` class for low-level access.
+- 1. The WallStream plugins for high-level access: **[WallStream Widget](#javascript-widget)** and **[WallStream jQuery](#jquery-plugin)**.
+- 2. The **[`WallStreamCore`](#wallstreamcore)** class for low-level access.
 
 Both levels share the same set of base parameters:
 - `accessToken`: Your wall access token (required)
