@@ -104,10 +104,12 @@ var stream = new WallStreamCore({
 - [jQuery plugin demo](https://rawgithub.com/neuling/WallStream/master/dist/demo-jquery.html)
 - [Raw WallStreamCore demo](https://rawgithub.com/neuling/WallStream/master/dist/demo-raw.html)
 
-> This project was created at [#Camp404] 2014 at Lake Balaton, Hungary by Moritz Kobrna and Patrick Mladensich. It uses the [Walls.io] API by [Die Socialisten].
+> This project was created at [#Camp404] 2014 at Lake Balaton, Hungary by [Moritz Kobrna] and [Patrick Mladensich]. It uses the [Walls.io] API by [Die Socialisten].
 
 
 [JST template]:http://underscorejs.org/#template
 [#Camp404]:http://404.camp
 [Walls.io]:http://walls.io
 [Die Socialisten]:http://die.socialisten.at
+[Moritz Kobrna]:https://github.com/neuling
+[Patrick Mladensich]:https://github.com/catearcher
