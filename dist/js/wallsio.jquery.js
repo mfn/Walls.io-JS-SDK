@@ -54,8 +54,7 @@
 
   Wall = (function() {
     Wall.prototype.defaults = {
-      template: '<p id="<%=id%>"><%=comment%></p>',
-      wallStreamOptions: {}
+      template: '<p id="<%=id%>"><%=comment%></p>'
     };
 
     function Wall(el, options) {
@@ -66,7 +65,7 @@
       this.$el = $(el);
       this.options = {};
       this.options = $.extend({}, this.defaults, options);
-      this.stream = new WallStream($.extend(this.options.wallStreamOptions, {
+      this.stream = new WallStream($.extend(this.options, {
         onPost: this.renderPost
       }));
     }
@@ -75,13 +74,16 @@
       var $html, html, template;
       template = $.isFunction(this.options.template) ? this.options.template(post) : this.options.template;
       html = tmpl(template, post);
-      if ($.isFunction(this.options.beforeInsert)) {
-        html = this.options.beforeInsert(html, post);
-      }
-      $html = $(html);
-      this.$el.append($html);
-      if ($.isFunction(this.options.afterInsert)) {
-        return this.options.afterInsert($html);
+      this._callback(this.options.beforeInsert, html, post);
+      this.$el.append($html = $(html));
+      return this._callback(this.options.afterInsert, $html, post);
+    };
+
+    Wall.prototype._callback = function() {
+      var args, callback;
+      callback = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+      if ($.isFunction(callback)) {
+        return callback.apply(window, args);
       }
     };
 
