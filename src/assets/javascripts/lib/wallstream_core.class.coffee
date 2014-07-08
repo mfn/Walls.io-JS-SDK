@@ -1,18 +1,20 @@
 class WallStreamCore
 
   defaults:
-    interval: 2000
+    interval: 5000
     initialLimit: 10
     accessToken: null
     fields: []
     types: []
-    host: "https://beta.walls.io"
+    host: "beta.walls.io"
     path: "/api/posts.json"
     onPost: ->
 
   constructor: (options) ->
     @options = {}
     @options = $.extend {}, @defaults, options
+    
+    @options.interval = Math.max(@options.interval, 1000)
 
     @latestId = null
     @stopped  = false
@@ -45,7 +47,7 @@ class WallStreamCore
   _fetch: ->
     @params.after = @latestId if @latestId
 
-    $.getJSON "#{@options.host}#{@options.path}?callback=?&#{@_prepareParams(@params)}", (result) =>
+    $.getJSON "https://#{@options.host}#{@options.path}?callback=?&#{@_prepareParams(@params)}", (result) =>
       return if @stopped
 
       delete @params.limit

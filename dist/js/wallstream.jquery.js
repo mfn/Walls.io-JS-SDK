@@ -56,12 +56,12 @@
 
   WallStreamCore = (function() {
     WallStreamCore.prototype.defaults = {
-      interval: 2000,
+      interval: 5000,
       initialLimit: 10,
       accessToken: null,
       fields: [],
       types: [],
-      host: "https://beta.walls.io",
+      host: "beta.walls.io",
       path: "/api/posts.json",
       onPost: function() {}
     };
@@ -69,6 +69,7 @@
     function WallStreamCore(options) {
       this.options = {};
       this.options = $.extend({}, this.defaults, options);
+      this.options.interval = Math.max(this.options.interval, 1000);
       this.latestId = null;
       this.stopped = false;
       if (!this.options.accessToken) {
@@ -107,7 +108,7 @@
       if (this.latestId) {
         this.params.after = this.latestId;
       }
-      return $.getJSON("" + this.options.host + this.options.path + "?callback=?&" + (this._prepareParams(this.params)), (function(_this) {
+      return $.getJSON("https://" + this.options.host + this.options.path + "?callback=?&" + (this._prepareParams(this.params)), (function(_this) {
         return function(result) {
           var post, _i, _len, _ref, _ref1, _ref2;
           if (_this.stopped) {
