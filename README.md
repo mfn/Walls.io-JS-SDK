@@ -13,13 +13,13 @@ Both levels share the same set of base parameters:
 - `accessToken`: Your wall access token (required)
 - `initialLimit`: The number of posts that are fetched after initialization (optional, default: `10`)
 - `interval`: How often to check for new posts, in milliseconds (optional, default: `5000`, minimum: `1000`)
-- `fields`: An array of field names you want to receive for each post (optinal, default: all fields)
+- `fields`: An array of field names you want to receive for each post (optional, default: all fields)
 - `types`: An array of post types (e.g. `["twitter", "facebook"]`) that you want to receive posts for (optional, default: all types)
 
 
 The plugins (both jQuery and JS widget) have several additional parameters:
-- `template`: A JST template that is used for rendering the post. All fields the API returns for a post are accessible in your template. You can insert variable values with `<%=variableName%>` and even use arbitrary JavaScript (see example below)
-- `maxPosts`: The maximum number of posts that can be in the widget at one time (optional, default: `10`, pass `false` for unlimited posts)
+- `template`: A [JST template](http://underscorejs.org/#template) that is used for rendering the post. All fields the API returns for a post are accessible in your template. You can insert variable values with `<%=variableName%>` and even use arbitrary JavaScript (see [example below](#jquery-plugin))
+- `maxPosts`: The maximum number of posts that can be in the widget at one time (default: `10`, pass `false` for unlimited posts)
 - `insertPosition`: The position where new posts are added to the DOM (possible values: `before` and `after`, default: `before`)
 
 In addition to all of the above, the **[jQuery plugin](#jquery-plugin)** also supports the following callbacks:
@@ -51,7 +51,7 @@ Example usage:
 Example usage:
 
 ```html
-// put this in your <head>, after jQuery!
+<!-- put this in your <head>, after jQuery! -->
 <script src="//cdn.rawgit.com/neuling/WallStream/master/dist/js/wallstream.jquery.js"></script>
 ```
 
@@ -98,3 +98,4 @@ var stream = new WallStreamCore({
   }
 });
 ```
+
