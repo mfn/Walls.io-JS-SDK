@@ -6,7 +6,7 @@ class WallStream
     @$el     = $(el)
     @options = {}
     @options = $.extend {}, @defaults, options
-    @stream  = new WallFetcher $.extend(@options, { onPost: @renderPost })
+    @stream  = new WallStreamCore $.extend(@options, { onPost: @renderPost })
 
   renderPost: (post) =>
     template = if $.isFunction(@options.template) then @options.template(post) else @options.template

@@ -1,4 +1,4 @@
-class WallFetcher
+class WallStreamCore
 
   defaults:
     interval: 2000
@@ -17,7 +17,7 @@ class WallFetcher
     @latestId = null
     @stopped  = false
 
-    new WallError("AccessTokenError", "access token missing") unless @options.accessToken
+    throw new Error("WallStreamCore: Access token missing") unless @options.accessToken
 
     @params =
       access_token: @options.accessToken
@@ -69,4 +69,4 @@ class WallFetcher
       callback.apply(@, args)
     , ms
 
-window.WallFetcher = WallFetcher
+window.WallStreamCore = WallStreamCore
