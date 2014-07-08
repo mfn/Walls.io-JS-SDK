@@ -4,6 +4,12 @@ remember  = require("gulp-remember")
 coffee    = require("gulp-coffee")
 include   = require("gulp-include")
 
+usemin     = require('gulp-usemin')
+uglify     = require('gulp-uglify')
+minifyHtml = require('gulp-minify-html')
+minifyCss  = require('gulp-minify-css')
+rev        = require('gulp-rev')
+
 buildDir  = "build"
 distDir   = "dist"
 assetsDir = "src/assets"
@@ -21,6 +27,13 @@ gulp.task "scripts", ->
   .pipe(coffee())
   .on "error", (error) -> console.log error
   .pipe(gulp.dest(buildDir + "/js"))
+
+gulp.task "usemin", ->
+  gulp.src("#{buildDir}/*.html")
+    .pipe usemin
+      css: [minifyCss(), "concat"]
+      js: [uglify(), rev()]
+    .pipe(gulp.dest("#{distDir}/"))
 
 gulp.task "pseudodist", ->
   gulp.src("#{buildDir}/**/*")

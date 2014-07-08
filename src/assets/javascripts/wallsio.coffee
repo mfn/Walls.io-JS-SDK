@@ -1,4 +1,2 @@
-`
-//= require ../../public/js/lib/tmpl.js
-`
-#= require_tree includes
+#= require_tree lib
+#= require_tree vendors

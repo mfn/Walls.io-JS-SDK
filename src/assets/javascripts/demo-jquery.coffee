@@ -7,7 +7,6 @@ $ ->
       return false if /coffee/i.test(html)
       html
     afterInsert: ($el) ->
-      console.log($el)
       setTimeout ->
         $el.css("background", "red")
       , 2000

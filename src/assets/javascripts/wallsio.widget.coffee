@@ -1,8 +1,6 @@
-`
-//= require ../../public/js/lib/tmpl.js
-`
+#= require_tree lib
+#= require_tree vendors
 
-#= require_tree includes
 
 jQueryLoaded = ->
 
