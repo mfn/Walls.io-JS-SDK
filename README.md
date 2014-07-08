@@ -3,6 +3,8 @@ WallStream
 
 Widgets and tools for Walls.io
 
+#### [See demos](#demos)
+
 ## Usage
 
 There are two levels of WallStream:
