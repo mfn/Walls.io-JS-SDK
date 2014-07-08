@@ -72,13 +72,17 @@
     }
 
     Wall.prototype.renderPost = function(post) {
-      var html, template;
+      var $html, html, template;
       template = $.isFunction(this.options.template) ? this.options.template(post) : this.options.template;
       html = tmpl(template, post);
       if ($.isFunction(this.options.beforeInsert)) {
         html = this.options.beforeInsert(html, post);
       }
-      return this.$el.append(html);
+      $html = $(html);
+      this.$el.append($html);
+      if ($.isFunction(this.options.afterInsert)) {
+        return this.options.afterInsert($html);
+      }
     };
 
     return Wall;

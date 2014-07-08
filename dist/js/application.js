@@ -6,7 +6,16 @@
       },
       template: $("#my-template").html(),
       beforeInsert: function(html, post) {
+        if (/coffee/i.test(html)) {
+          return false;
+        }
         return html;
+      },
+      afterInsert: function($el) {
+        console.log($el);
+        return setTimeout(function() {
+          return $el.css("background", "red");
+        }, 2000);
       }
     });
   });
