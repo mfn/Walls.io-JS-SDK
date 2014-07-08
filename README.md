@@ -6,15 +6,15 @@ Widgets and tools for Walls.io
 ## Usage
 
 There are two levels of WallStream:
-1. The WallStream plugins for high-level access: **WallStream Widget** and **WallStream jQuery**.
+1. The WallStream plugins for high-level access: **[WallStream Widget](#javascript-widget)** and **[WallStream jQuery](jquery-plugin)**.
 2. The `WallStreamCore` class for low-level access.
 
 Both levels share the same set of base parameters:
 - `accessToken`: Your wall access token (required)
-- `initialLimit`: The number of posts that are fetched right after the widget or class is loaded (optional, default: `10`)
-- `interval`: The rate at which posts are fetched, in milliseconds (optional, default: `5000`, minimum: `1000`)
+- `initialLimit`: The number of posts that are fetched after initialization (optional, default: `10`)
+- `interval`: How often to check for new posts, in milliseconds (optional, default: `5000`, minimum: `1000`)
 - `fields`: An array of field names you want to receive for each post (optinal, default: all fields)
-- `types`: An array of post types (e.g. `["twitter", "facebook"]`). This can be used to specify the types of posts you would like to receive
+- `types`: An array of post types (e.g. `["twitter", "facebook"]`) that you want to receive posts for (optional, default: all types)
 
 
 The plugins (both jQuery and JS widget) have several additional options:
