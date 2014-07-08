@@ -17,6 +17,12 @@ class Wall
     if $.isFunction(@options.beforeInsert)
       html = @options.beforeInsert(html, post)
 
-    @$el.append html
+    $html = $(html)
+    @$el.append $html
+
+    if $.isFunction(@options.afterInsert)
+      @options.afterInsert($html)
+
+
 
 window.Wall = Wall
