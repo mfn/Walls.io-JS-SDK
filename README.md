@@ -39,7 +39,7 @@ Options are passed via data attributes, prefixed with `data-wallstream-`, e.g. `
 Example usage:
 ```html
 <script
-  src="//cdn.rawgit.com/neuling/Walls.io-Widget/master/dist/js/wallstream.widget.js"
+  src="//cdn.rawgit.com/neuling/WallStream/master/dist/js/wallstream.widget.js"
   data-wallstream-access-token="<YOUR_ACCESS_TOKEN_HERE>"
   data-wallstream-initial-limit="10"
   data-wallstream-interval="2000">
@@ -52,7 +52,7 @@ Example usage:
 
 ```html
 // put this in your <head>, after jQuery!
-<script src="//cdn.rawgit.com/neuling/Walls.io-Widget/master/dist/js/wallstream.jquery.js"></script>
+<script src="//cdn.rawgit.com/neuling/WallStream/master/dist/js/wallstream.jquery.js"></script>
 ```
 
 ```js
@@ -72,7 +72,7 @@ $("#my-wall").wall({
 The WallStreamCore class gives you low-level access to WallStream. Use this if you want to use your own templating engine or if you want to use posts for something else than adding them to the DOM.
 
 ```html
-<script src="//cdn.rawgit.com/neuling/Walls.io-Widget/master/dist/js/wallstream.js"></script>
+<script src="//cdn.rawgit.com/neuling/WallStream/master/dist/js/wallstream.js"></script>
 ```
 
 ```js

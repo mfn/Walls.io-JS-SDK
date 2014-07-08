@@ -1,5 +1,5 @@
 {
-  "name": "Walls.io-Widget",
+  "name": "WallStream",
   "version": "0.9",
   "devDependencies": {
     "coffee-script": "^1.7.1",
