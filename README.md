@@ -18,7 +18,7 @@ Both levels share the same set of base parameters:
 
 
 The plugins (both jQuery and JS widget) have several additional parameters:
-- `template`: A [JST template](http://underscorejs.org/#template) that is used for rendering the post. All fields the API returns for a post are accessible in your template. You can insert variable values with `<%=variableName%>` and even use arbitrary JavaScript (see [example below](#jquery-plugin))
+- `template`: A [JST template] that is used for rendering the post. All fields the API returns for a post are accessible in your template. You can insert variable values with `<%=variableName%>` and even use arbitrary JavaScript (see [example below](#jquery-plugin))
 - `maxPosts`: The maximum number of posts that can be in the widget at one time (default: `10`, pass `false` for unlimited posts)
 - `insertPosition`: The position where new posts are added to the DOM (possible values: `before` and `after`, default: `before`)
 
@@ -67,8 +67,8 @@ $("#my-wall").wall({
 });
 ```
 
-```html
-// the template
+#### Post template
+```
 <script type="text/html" id="my-template">
 <div class="post">
   <strong><%=external_name%></strong>: <%=comment%>
@@ -99,3 +99,10 @@ var stream = new WallStreamCore({
 });
 ```
 
+> This project was created at [#Camp404] 2014 at Lake Balaton, Hungary by Moritz Kobrna and Patrick Mladensich. It uses the [Walls.io] API by [Die Socialisten].
+
+
+[JST template]:http://underscorejs.org/#template
+[#Camp404]:http://404.camp
+[Walls.io]:http://walls.io
+[Die Socialisten]:http://die.socialisten.at
