@@ -1,5 +1,5 @@
 (function() {
-  var Wall, WallError, WallStream, jQueryLoaded, loadjQuery,
+  var WallStream, WallStreamCore,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __slice = [].slice;
 
@@ -13,12 +13,12 @@
     });
   };
 
-  Wall = (function() {
-    Wall.prototype.defaults = {
+  WallStream = (function() {
+    WallStream.prototype.defaults = {
       template: '<p id="<%=id%>"><%=comment%></p>'
     };
 
-    function Wall(el, options) {
+    function WallStream(el, options) {
       if (options == null) {
         options = {};
       }
@@ -26,12 +26,12 @@
       this.$el = $(el);
       this.options = {};
       this.options = $.extend({}, this.defaults, options);
-      this.stream = new WallStream($.extend(this.options, {
+      this.stream = new WallStreamCore($.extend(this.options, {
         onPost: this.renderPost
       }));
     }
 
-    Wall.prototype.renderPost = function(post) {
+    WallStream.prototype.renderPost = function(post) {
       var $html, html, template;
       template = $.isFunction(this.options.template) ? this.options.template(post) : this.options.template;
       html = tmpl(template, post);
@@ -40,7 +40,7 @@
       return this._callback(this.options.afterInsert, $html, post);
     };
 
-    Wall.prototype._callback = function() {
+    WallStream.prototype._callback = function() {
       var args, callback;
       callback = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       if ($.isFunction(callback)) {
@@ -48,33 +48,14 @@
       }
     };
 
-    return Wall;
+    return WallStream;
 
   })();
 
-  window.Wall = Wall;
+  window.WallStream = WallStream;
 
-  WallError = (function() {
-    function WallError(name, message) {
-      throw {
-        name: "" + name,
-        level: "Show Stopper",
-        message: "" + message,
-        htmlMessage: "" + message,
-        toString: function() {
-          return "" + this.name + ": " + message;
-        }
-      };
-    }
-
-    return WallError;
-
-  })();
-
-  window.WallError = WallError;
-
-  WallStream = (function() {
-    WallStream.prototype.defaults = {
+  WallStreamCore = (function() {
+    WallStreamCore.prototype.defaults = {
       interval: 2000,
       initialLimit: 10,
       accessToken: null,
@@ -85,13 +66,13 @@
       onPost: function() {}
     };
 
-    function WallStream(options) {
+    function WallStreamCore(options) {
       this.options = {};
       this.options = $.extend({}, this.defaults, options);
       this.latestId = null;
       this.stopped = false;
       if (!this.options.accessToken) {
-        new WallError("AccessTokenError", "access token missing");
+        throw new Error("WallStreamCore: Access token missing");
       }
       this.params = {
         access_token: this.options.accessToken,
@@ -105,7 +86,7 @@
       this._start();
     }
 
-    WallStream.prototype._prepareParams = function(params) {
+    WallStreamCore.prototype._prepareParams = function(params) {
       var key, newHash, value, valueIsArray;
       newHash = {};
       for (key in params) {
@@ -122,7 +103,7 @@
       return $.param(newHash);
     };
 
-    WallStream.prototype._fetch = function() {
+    WallStreamCore.prototype._fetch = function() {
       if (this.latestId) {
         this.params.after = this.latestId;
       }
@@ -146,12 +127,12 @@
       })(this));
     };
 
-    WallStream.prototype._start = function() {
+    WallStreamCore.prototype._start = function() {
       this.stopped = false;
       return this._fetch();
     };
 
-    WallStream.prototype._stop = function() {
+    WallStreamCore.prototype._stop = function() {
       this.stopped = true;
       if (this._timeout) {
         clearTimeout(this._timeout);
@@ -159,7 +140,7 @@
       }
     };
 
-    WallStream.prototype._delayed = function() {
+    WallStreamCore.prototype._delayed = function() {
       var args, callback, ms;
       callback = arguments[0], ms = arguments[1], args = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
       return setTimeout((function(_this) {
@@ -169,11 +150,11 @@
       })(this), ms);
     };
 
-    return WallStream;
+    return WallStreamCore;
 
   })();
 
-  window.WallStream = WallStream;
+  window.WallStreamCore = WallStreamCore;
 
   (function() {
     var cache, tmpl;
@@ -188,37 +169,5 @@
       }
     };
   })();
-
-  jQueryLoaded = function() {
-    var $widgetScriptTag;
-    $widgetScriptTag = $("script:last");
-    return $(function() {
-      var $wallElement, attribute, options, _i, _len, _ref;
-      $widgetScriptTag.after(($wallElement = $("<div class='wall'></div>")));
-      options = {};
-      _ref = $widgetScriptTag.get(0).attributes;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        attribute = _ref[_i];
-        if (attribute.name.match(/^data-wall/)) {
-          options[attribute.name.replace(/^data-wall/, "").camelize()] = attribute.value;
-        }
-      }
-      return new Wall($wallElement, options);
-    });
-  };
-
-  loadjQuery = function() {
-    var js;
-    js = document.createElement("script");
-    js.addEventListener("load", jQueryLoaded);
-    js.src = "//code.jquery.com/jquery-2.1.1.min.js";
-    return document.head.appendChild(js);
-  };
-
-  if (typeof jQuery !== "undefined" && jQuery !== null) {
-    jQueryLoaded();
-  } else {
-    loadjQuery();
-  }
 
 }).call(this);

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Walls.io-Widget Demo</title>
-    <script src="js/lib/jquery-2.1.0.min.js" type="text/javascript"></script>
-    <script src="js/wallsio.jquery.js" type="text/javascript"></script>
+    <title>WallStream jQuery Plugin Demo</title>
+    <script src="js/lib/jquery-2.1.1.min.js"></script>
+    <script src="js/wallstream.jquery.js"></script>
     <script>
     $(function() {
-      $("#mywall").wall({
+      $("#mywall").wallStream({
         accessToken: "5f864451221b0e8d2ff61b3179ac1a3b5d4ac9e3",
         template: $("#my-template").html(),
         beforeInsert: function(html, post) {
