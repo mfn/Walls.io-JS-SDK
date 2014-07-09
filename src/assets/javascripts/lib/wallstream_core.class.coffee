@@ -28,23 +28,10 @@ class WallStreamCore
 
     params.fields.push "id" if params.fields.indexOf("id") == -1 && params.fields.length > 0
 
-    prepareParams = (params) ->
-      newHash = {}
-      for key, value of params
-
-        valueIsArray = $.isArray(value)
-
-        continue if valueIsArray && value.length == 0
-        continue unless value
-
-        newHash[key] = if $.isArray(value) then value.join(",") else value
-
-      $.param(newHash)
-
     fetch = ->
       params.after = latestId if latestId
 
-      $.getJSON "https://#{options.host}#{options.path}?callback=?&#{prepareParams(params)}", (result) =>
+      $.getJSON "https://#{options.host}#{options.path}?callback=?&#{$.param(params)}", (result) =>
         return if stopped
 
         delete params.limit
