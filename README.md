@@ -41,7 +41,7 @@ Options are passed via data attributes, prefixed with `data-wallstream-`, e.g. `
 Example usage:
 ```html
 <script
-  src="//cdn.rawgit.com/neuling/WallStream/master/dist/js/wallstream.widget.js"
+  src="//cdn.rawgit.com/DieSocialisten/Walls.io-JS-SDK/master/dist/js/wallstream.widget.js"
   data-wallstream-access-token="<YOUR_ACCESS_TOKEN_HERE>"
   data-wallstream-initial-limit="10"
   data-wallstream-interval="2000">
@@ -54,7 +54,7 @@ Example usage:
 
 ```html
 <!-- put this in your <head>, after jQuery! -->
-<script src="//cdn.rawgit.com/neuling/WallStream/master/dist/js/wallstream.jquery.js"></script>
+<script src="//cdn.rawgit.com/DieSocialisten/Walls.io-JS-SDK/master/dist/js/wallstream.jquery.js"></script>
 ```
 
 ```js
@@ -87,7 +87,7 @@ $("#my-wall").wallStream({
 The WallStreamCore class gives you low-level access to WallStream. Use this if you want to use your own templating engine or if you want to use posts for something else than adding them to the DOM.
 
 ```html
-<script src="//cdn.rawgit.com/neuling/WallStream/master/dist/js/wallstream.js"></script>
+<script src="//cdn.rawgit.com/DieSocialisten/Walls.io-JS-SDK/master/dist/js/wallstream.js"></script>
 ```
 
 ```js
@@ -102,9 +102,9 @@ var stream = new WallStreamCore({
 ```
 
 ### Demos
-- [Simple widget demo](https://rawgithub.com/neuling/WallStream/master/dist/demo-widget.html)
-- [jQuery plugin demo](https://rawgithub.com/neuling/WallStream/master/dist/demo-jquery.html)
-- [Raw WallStreamCore demo](https://rawgithub.com/neuling/WallStream/master/dist/demo-raw.html)
+- [Simple widget demo](https://rawgithub.com/DieSocialisten/Walls.io-JS-SDK/master/dist/demo-widget.html)
+- [jQuery plugin demo](https://rawgithub.com/DieSocialisten/Walls.io-JS-SDK/master/dist/demo-jquery.html)
+- [Raw WallStreamCore demo](https://rawgithub.com/DieSocialisten/Walls.io-JS-SDK/master/dist/demo-raw.html)
 
 > This project was created at [#Camp404] 2014 at Lake Balaton, Hungary by [Moritz Kobrna] and [Patrick Mladensich]. It uses the [Walls.io] API by [Die Socialisten].
 
