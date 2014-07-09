@@ -37,8 +37,12 @@ class WallStream
         
     stream  = new WallStreamCore $.extend(options, { onPost: renderPost })
     
-    
     @stop = stream.stop
     @start = stream.start
+    
+    @destroy = ->
+      stream.destroy()
+      stream = null
+      $el.trigger "wallstream.destroyed"
     
 window.WallStream = WallStream

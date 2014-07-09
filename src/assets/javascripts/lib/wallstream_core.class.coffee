@@ -16,7 +16,7 @@ class WallStreamCore
     options.interval = Math.max(options.interval, 1000)
 
     latestId = null
-    stopped  = false
+    stopped  = true
 
     throw new Error("WallStreamCore: Access token missing") unless options.accessToken
 
@@ -45,10 +45,15 @@ class WallStreamCore
         callback.apply(@, args)
       , ms
       
-
+    @destroy = ->
+      @stop()
+      
     @start = ->
-      stopped = false
-      fetch()
+      if stopped
+        stopped = false
+        fetch()
+      
+      return @
 
     @stop = ->
       stopped = true
@@ -56,6 +61,7 @@ class WallStreamCore
         clearTimeout timeout
         timeout = null
         
+      return @
     
     @start()
 

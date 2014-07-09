@@ -61,6 +61,11 @@
       }));
       this.stop = stream.stop;
       this.start = stream.start;
+      this.destroy = function() {
+        stream.destroy();
+        stream = null;
+        return $el.trigger("wallstream.destroyed");
+      };
     }
 
     return WallStream;
@@ -84,11 +89,11 @@
     };
 
     function WallStreamCore(options) {
-      var delayed, fetch, latestId, params, prepareParams, stopped;
+      var delayed, fetch, latestId, params, stopped;
       options = $.extend({}, defaults, options);
       options.interval = Math.max(options.interval, 1000);
       latestId = null;
-      stopped = false;
+      stopped = true;
       if (!options.accessToken) {
         throw new Error("WallStreamCore: Access token missing");
       }
@@ -101,27 +106,11 @@
       if (params.fields.indexOf("id") === -1 && params.fields.length > 0) {
         params.fields.push("id");
       }
-      prepareParams = function(params) {
-        var key, newHash, value, valueIsArray;
-        newHash = {};
-        for (key in params) {
-          value = params[key];
-          valueIsArray = $.isArray(value);
-          if (valueIsArray && value.length === 0) {
-            continue;
-          }
-          if (!value) {
-            continue;
-          }
-          newHash[key] = $.isArray(value) ? value.join(",") : value;
-        }
-        return $.param(newHash);
-      };
       fetch = function() {
         if (latestId) {
           params.after = latestId;
         }
-        return $.getJSON("https://" + options.host + options.path + "?callback=?&" + (prepareParams(params)), (function(_this) {
+        return $.getJSON("https://" + options.host + options.path + "?callback=?&" + ($.param(params)), (function(_this) {
           return function(result) {
             var post, timeout, _i, _len, _ref, _ref1, _ref2;
             if (stopped) {
@@ -149,17 +138,24 @@
           };
         })(this), ms);
       };
+      this.destroy = function() {
+        return this.stop();
+      };
       this.start = function() {
-        stopped = false;
-        return fetch();
+        if (stopped) {
+          stopped = false;
+          fetch();
+        }
+        return this;
       };
       this.stop = function() {
         var timeout;
         stopped = true;
         if (timeout) {
           clearTimeout(timeout);
-          return timeout = null;
+          timeout = null;
         }
+        return this;
       };
       this.start();
     }
