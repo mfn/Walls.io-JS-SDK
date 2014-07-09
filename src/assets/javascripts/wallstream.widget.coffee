@@ -14,7 +14,7 @@ jQueryLoaded = ->
     for attribute in $widgetScriptTag.get(0).attributes
       if attribute.name.match /^data-wallstream/
         options[attribute.name.replace(/^data-wallstream/, "").camelize()] = $widgetScriptTag.data(attribute.name.replace(/^data-/, ""))
-
+    
     new WallStream $wallElement, options
 
 

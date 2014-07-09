@@ -27,7 +27,7 @@
         options = {};
       }
       $el = $(el);
-      options = $.extend({}, this.defaults, options);
+      options = $.extend({}, defaults, options);
       this.$el = $el;
       renderPost = function(post) {
         var $html, html, maxPosts, posts, sliceOptions, template;

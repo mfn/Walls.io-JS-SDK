@@ -6,7 +6,7 @@ class WallStream
 
   constructor: (el, options = {}) ->
     $el     = $(el)
-    options = $.extend {}, @defaults, options
+    options = $.extend {}, defaults, options
     @$el    = $el
     
     renderPost = (post) ->
