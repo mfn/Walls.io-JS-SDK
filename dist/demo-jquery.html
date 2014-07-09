@@ -12,14 +12,7 @@
         types: ["instagram", "appdotnet"],
         insertPosition: "after",
         beforeInsert: function(html, post) {
-          if (/coffee/i.test(html)) {
-            return html
-          } else {
-            return ""
-          }
-        },
-        afterInsert: function($el) {
-          setTimeout(function() { $el.css("background", "red") }, 2000);
+          return html;
         }
       });
     });
@@ -31,9 +24,6 @@
     <div class="post">
       <strong><%=external_name%>:</strong> <%=comment%><br>
       <small><%=type%></small>
-      <% if (post_image) { %>
-        <img src="<%=post_image%>">
-      <% } %>
     </div>
     </script>
   </body>

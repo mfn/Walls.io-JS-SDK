@@ -32,7 +32,7 @@
       renderPost = function(post) {
         var $html, html, maxPosts, posts, sliceOptions, template;
         template = $.isFunction(options.template) ? options.template(post) : options.template;
-        html = tmpl(template, post);
+        html = WallStream.tmpl(template, post);
         callback(options.beforeInsert, html, post);
         if (options.insertPosition === "before") {
           $el.prepend($html = $(html));
@@ -169,7 +169,7 @@
   (function() {
     var cache, tmpl;
     cache = {};
-    this.tmpl = tmpl = function(str, data) {
+    window.WallStream.tmpl = tmpl = function(str, data) {
       var fn;
       fn = (!/\W/.test(str) ? cache[str] = cache[str] || tmpl(document.getElementById(str).innerHTML) : new Function("obj", "var p=[],print=function(){p.push.apply(p,arguments);};" + "with(obj){p.push('" + str.replace(/[\r\t\n]/g, " ").split("<%").join("\t").replace(/((^|%>)[^\t]*)'/g, "$1\r").replace(/\t=(.*?)%>/g, "',$1,'").split("\t").join("');").split("%>").join("p.push('").split("\r").join("\\'") + "');}return p.join('');"));
       if (data) {

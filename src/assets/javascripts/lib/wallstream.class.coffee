@@ -8,11 +8,11 @@ class WallStream
     $el     = $(el)
     options = $.extend {}, defaults, options
     @$el    = $el
-    
+
     renderPost = (post) ->
-      
+
       template = if $.isFunction(options.template) then options.template(post) else options.template
-      html     = tmpl(template, post)
+      html     = WallStream.tmpl(template, post)
 
       callback options.beforeInsert, html, post
 
@@ -34,15 +34,15 @@ class WallStream
     callback = (callback, args...) ->
       if $.isFunction(callback)
         callback.apply(window, args)
-        
+
     stream  = new WallStreamCore $.extend(options, { onPost: renderPost })
-    
+
     @stop = stream.stop
     @start = stream.start
-    
+
     @destroy = ->
       stream.destroy()
       stream = null
       $el.trigger "wallstream.destroyed"
-    
+
 window.WallStream = WallStream
