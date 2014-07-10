@@ -38,22 +38,22 @@ All responses from the `/posts` endpoints share the same set of fields:
 - `status`: Whether this post is active (visible) or inactive (invisible) on the Wall. Contains `true` if it is active.
 - `created`: The date and time when this post was created in the social network it was posted to.
 - `modified`: Ths date and time of the last modification of this `Post` object. This can be used to update existing posts, for example if their status was changed on Walls.io.
-- `permalink`: A permalink to the post on the social network it was posted to.
-- `userlink`: A permalink to the user's profile on the social network the post was posted to.
+- `permalink`: The permalink of this post on the social network it was posted to.
+- `userlink`: A link to the user's profile on the social network the post was posted to.
 
 
 ### GET api/posts.*{format}*
 
-Returns a list of posts for a wall. The wall is determined by the `access_token` that is passed with the request.
+Returns a list of posts for a wall. The wall is determined by the `access_token` that must be passed with the request.
 
 #### Example request
-`GET https://walls.io/api/posts.json?access_token=*<YOUR_ACCESS_TOKEN>*&fields=id,comment,type&limit=10`
+`GET https://walls.io/api/posts.json?access_token=<YOUR_ACCESS_TOKEN>&fields=id,comment,type&limit=10`
 
 #### Parameters
 - `access_token` *(required)*: Your Walls.io access token.
 - `limit`: The maximum number of posts you would like to receive. The maximum limit is `1000`. If this parameter is not passed, the limit will be set to `50`.
-- `after`: A post id used for pagination of results. Use will only receive posts that have a higher ID than this.
-- `before`: A post id used for pagination of results. Use will only receive posts that have a lower ID than this.
+- `after`: A post id used for pagination of results. You will only receive posts that have a higher ID than this.
+- `before`: A post id used for pagination of results. You will only receive posts that have a lower ID than this.
 - `fields`: A comma-separated list of fields you would like to receive for each post. For a full list of possible fields see [the list of common fields](#common-post-fields).
 - `types`: A comma-separated list of the types of posts you would like to receive. For a full list of possible types see the `type` field in the  [list of common fields](#common-post-fields).
 
@@ -106,18 +106,18 @@ Returns a list of posts for a wall. The wall is determined by the `access_token`
 
 ### GET api/posts/changed.*{format}*
 
-Returns a list of posts for a wall, ordered by the time they were updated. The wall is determined by the `access_token` that is passed with the request.
+Returns a list of posts for a wall, ordered by the time they were updated. The wall is determined by the `access_token` that must be passed with the request.
 
 This endpoint should be used if you need to know about all updates to existing posts, as well as new posts. Every time an existing post is updated, it rises to the top of this endpoint's response.
 
 #### Example request
-`GET https://walls.io/api/posts/changed.json?access_token=*<YOUR_ACCESS_TOKEN>*&since=1404996397`
+`GET https://walls.io/api/posts/changed.json?access_token=<YOUR_ACCESS_TOKEN>&since=1404996397`
 
 #### Parameters
 - `access_token` *(required)*: Your Walls.io access token.
 - `limit`: The maximum number of posts you would like to receive. The maximum limit is `1000`. If this parameter is not passed, the limit will be set to `50`.
-- `since`: A timestamp used for pagination of results. Use will only receive posts that have been updated since this date and time. Please use the `current_time` field of the response and pass it as the `since` field of the next request.
-- `until`: A UNIX timestamp used for pagination of results. Use will only receive posts that have not been updated since this date and time.
+- `since`: A timestamp used for pagination of results. You will only receive posts that have been updated since this date and time. Please use the `current_time` field of the response and pass it as the `since` field of the next request.
+- `until`: A UNIX timestamp used for pagination of results. You will only receive posts that have been updated before this date and time.
 - `fields`: A comma-separated list of fields you would like to receive for each post. For a full list of possible fields see [the list of common fields](#common-post-fields).
 - `types`: A comma-separated list of the types of posts you would like to receive. For a full list of possible types see the `type` field in the  [list of common fields](#common-post-fields).
 
@@ -159,7 +159,7 @@ This endpoint should be used if you need to know about all updates to existing p
 Returns a single post, specified by its Walls.io post id.
 
 #### Example request
-`GET https://dev.walls.io/api/posts/17824236.json?access_token=*<YOUR_ACCESS_TOKEN>*`
+`GET https://dev.walls.io/api/posts/17824236.json?access_token=<YOUR_ACCESS_TOKEN>`
 
 #### Parameters
 - `access_token` *(required)*: Your Walls.io access token.
