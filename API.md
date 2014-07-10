@@ -20,6 +20,7 @@ All responses from the `/posts` endpoints share the same set of fields:
  - `"facebook"`
  - `"instagram"`
  - `"googleplus"`
+ - `"foursquare"`
  - `"youtube"`
  - `"flickr"`
  - `"appdotnet"`
