@@ -3,7 +3,8 @@ WallStream
 
 Widgets and tools for Walls.io
 
-#### [See demos](#demos)
+### [See demos](#demos)
+### [API documentation]
 
 ## Usage
 
@@ -109,6 +110,7 @@ var stream = new WallStreamCore({
 > This project was created at [#Camp404] 2014 at Lake Balaton, Hungary by [Moritz Kobrna] and [Patrick Mladensich]. It uses the [Walls.io] API by [Die Socialisten].
 
 
+[API documentation]:https://github.com/DieSocialisten/Walls.io-JS-SDK/blob/master/API.md
 [JST template]:http://underscorejs.org/#template
 [#Camp404]:http://404.camp
 [Walls.io]:http://walls.io
