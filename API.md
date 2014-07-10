@@ -14,7 +14,7 @@ All endpoints, if called with a `GET` request, support the following response fo
 All responses from the `/posts` endpoints share the same set of fields:
 
 - `id`: The unique Walls.io ID of this post.
-- `comment`: The user-generated text of this post.
+- `comment`: The user-generated text content of this post.
 - `type`: The post type. Possible types are:
  - `"twitter"`
  - `"facebook"`
@@ -28,7 +28,7 @@ All responses from the `/posts` endpoints share the same set of fields:
  - `"rss"`
 - `external_image`: The user's profile pic.
 - `external_name`: The user's screen name or handle.
-- `external_fullname`: Some networks offer a "full name" or "display name" field additionally to the handle. This field contain this display name.
+- `external_fullname`: Some networks offer a "full name" or "display name" field in addition to the handle. This field contains this display name.
 - `external_user_id`: The user's ID in the social network.
 - `post_image`: The (user-generated) image that was added to this post.
 - `post_link`: The (user-generated) link that was added to this post.
